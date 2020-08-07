@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div id="scoped-content">
+   <style type="text/css" scoped>
+.bg-container{
+    background:#fff;   
+}
+.bg-tabs-content{
+    background:#fff;   
+}
+.text-white {
+    color: #000 !important;
+}
+.ui-bg-overlay-container, .ui-bg-video-container {
+    position: relative;
+}
+.ui-bg-cover {
+    background-color: transparent;
+    background-position: center center;
+    background-size: cover;
+}
+.ui-bg-overlay-container .ui-bg-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+}
+
+.bg-dark {
+    background-color: #fff !important;
+}
+.opacity-50 {
+    opacity: .5 !important;
+}
+.bg-dark {
+    background-color: #fff !important;
+}
+.ui-bg-overlay-container>*, .ui-bg-video-container>* {
+    position: relative;
+}
+@media (min-width: 992px){
+    .container, .container-fluid {
+        padding-right: 2rem;
+        padding-left: 2rem;
+    }
+}
+.media, .media>:not(.media-body), .jumbotron, .card {
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+}
+.d-flex, .d-inline-flex, .media, .media>:not(.media-body), .jumbotron, .card {
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+}
+.ui-w-100 {
+    width: 100px !important;
+    height: auto;
+}
+.font-weight-bold {
+    font-weight: 700 !important;
+}
+.opacity-75 {
+    opacity: .75 !important;
+}
+.tabs-alt.nav-tabs .nav-link.active, .tabs-alt.nav-tabs .nav-link.active:hover, .tabs-alt.nav-tabs .nav-link.active:focus, .tabs-alt>.nav-tabs .nav-link.active, .tabs-alt>.nav-tabs .nav-link.active:hover, .tabs-alt>.nav-tabs .nav-link.active:focus {
+    -webkit-box-shadow: 0 -2px 0 #fff inset;
+    box-shadow: 0 -2px 0 #fff inset;
+}
+
+.nav-tabs:not(.nav-fill):not(.nav-justified) .nav-link, .nav-pills:not(.nav-fill):not(.nav-justified) .nav-link {
+    margin-right: .125rem;
+}
+.nav-tabs.tabs-alt .nav-link, .tabs-alt>.nav-tabs .nav-link {
+    border-width: 0 !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+}
+.nav-tabs .nav-link.active {
+    border-bottom-color: #fff;
+}
+a.tech {
+font-size: 100%;
+color: white;
+height: auto;
+width: auto;
+background-color: black;
+border-radius: 5%;
+padding: .3%;
+} 
+
+   </style>
+</div>
+<section class="projects-section bg-black" id="projects">
+<div class="container">
+<div class="row" style="color:white;">
+<br/>
+{% comment %} {% with user.profile as profile %}
+{{profile}}
+                <table style="color:green;">
+                <tr><th>Last Seen</th><td>{% if profile.last_seen %}{{ profile.last_seen|timesince }}{% else %}awhile{% endif %} ago</td></tr>
+                <tr><th><i class="fa fa-circle"></i> Online</th><td>{{ profile.online }}</td></tr>
+                </table>
+{% endwith %} {% endcomment %}
+</div>
+<div class="bg-container">
+  <div class="container">
+    <div class="text-center py-5">
+      <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto tex">
+        <h4 class="font-weight-bold my-4" style="color:#149414;">{{user.Name}}</h4>
+        <div class="mb-4" style="color:#149414;">
+        <button id="ed">Edit</button>
+        <button id="de">Delete</button>
+        {% comment %} <p class="font-weight text-white">@{{user.userName}}</p> {% endcomment %}
+         <br/>
+         Number of challenges solved:  {{user.no_challenges}}
+         <br/>
+         Hacker Expertise level:  {{user.except_level}} 
+        <br/>
+         Data structures :  {{user.Data_structures}} 
+         <br/>
+         Algorihms:   {{user.Algo}} 
+         <br/>
+         cpp:   {{user.cpp}} 
+         <br/>
+         java:   {{user.cpp}} 
+         <br/>
+         Python :   {{user.python}}
+         {% comment %} <i class="{{ user.country.flag_css }}"></i> {% endcomment %}
+        </div>
+      </div>
+      {% if vote %}
+      <br/>
+      <a id="follow" class="btn" style="background-color:black;color:white;" href="/vote/{{user.Name}}">Vote</a>
+      {% endif %}
+    </div>
+  </div>
+  <hr class="m-0">
+
+</div>
+</div>
+</section>
+<script>
+jQuery(function($){
+    $("#bar").css("background-color","#242526");
+    $("a").css("color","#149414");
+    $(".us").css("color","#149414");
+    $('#projects').css('padding-top','3%');
+    $('#projects').css('padding-bottom','3%');
+    var t =$("#status").text();
+        $("body").css("background-color","black");
+        if(t.valueOf()=="online".valueOf()){
+            $("#status").text("Online");
+            $("#status").css("color","green");
+        }
+    var s= "{{request.session.who}}";
+    if(s=="admin"){
+
+    }
+    else if(s=="{{user.Name}}"){
+        $("#de").remove();
+    }
+    else{
+        $("#ed").remove();
+        $("#de").remove();
+    }
+    $("#ed").click(function(){
+        if(s!="admin")
+        alert("use rest/hacker/username/code to edit");
+        else
+        alert("use rest/hacker/username/password to edit or delete and rest/hacker to create");
+    });
+    $("#de").click(function(){
+        alert("use rest/hacker/username/password to edit or delete and rest/hacker to create");
+    });
+});
+</script>
+{% endblock %}

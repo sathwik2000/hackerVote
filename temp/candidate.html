@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main class="wrapper" style="background-color:black;color:#149414;">
+    <form action="/candidate" method="POST">
+    {% csrf_token %}
+    <h1>Enter container unicode</br></br></br></h1>
+    <div class="container">
+    <input type="text" name="password"/></br></br>
+    <div class="btn-group">
+    <button type="submit">submit</button>
+    </div>
+    </div>
+    </form>
+</main>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<script>
+    function routeHandler(route){
+        window.location.href = route
+    }
+</script>
+<main class="wrapper" style="background-color:black;">
+    <div class="bounce">
+    <h1 style="color:#149414 " id="ec">Hacker Elections</br></br></br></h1>
+    </div>
+    </br>
+    <div class="btn-group">
+    <button type="button" id="vote">vote</button>
+    </div>
+</main>
+<main class="wrapper" style="background-color:black;" id="vot">
+    <div class="btn-group" >
+    <button onclick="routeHandler('/user')">Normal User</button>
+    <button onclick="routeHandler('/candidate')">Candidate</button>
+    <button onclick="routeHandler('/admin1')">Admin</button>
+    </div>
+</main>
+<script>
+jQuery(function($){
+
+    $("#ec").effect( "bounce", {times:3}, 300 );
+    $("#vote").click(function(){
+        $('html,body').animate({
+        scrollTop: $("#" + "vot").offset().top
+    }, 'slow');
+    });
+});
+</script>
+{% endblock %}
