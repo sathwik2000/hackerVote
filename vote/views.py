@@ -60,8 +60,8 @@ class hackers(APIView):
 def hack(request,name):
     hack = Hacker.objects.get(Name=name)
     data = {}
-    if "vote" in request.COOKIES:
-        vo = request.COOKIES['vote']
+    if "vote" in request.session:
+        vo = request.session['vote']
         print(vo)
         if vo == "done":
             data['vote'] = False
@@ -73,7 +73,7 @@ def hack(request,name):
     return render(request,"home.html",data)
 
 def all(request):
-    hack = Hacker.objects.all()
+    hack = Hacker.objects.all().order_by('-votes')
     #print(hack)
     data = {}
     data['hackers'] = hack
@@ -82,25 +82,27 @@ def all(request):
 def vote(request,name):
     hack = Hacker.objects.get(Name=name)
     try:
-        vo = request.COOKIES['vote']
+        vo = request.session['vote']
+        print(vo)
         if vo == "done":
             return HttpResponse("already voted")
         else:
+            print(hack.votes)
             hack = Hacker.objects.get(Name=name)
             data = {}
             data['hackers'] = hack
-            response = HttpResponse("voted")
-            hack.votes += 1
-            response.set_cookie('vote', 'done')
-            return response
+            hack.votes = hack.votes + 1
+            hack.save()
+            request.session['vote']= "done"
+            return HttpResponse("voted")
     except:
         hack = Hacker.objects.get(Name=name)
         data = {}
         data['hackers'] = hack
-        response = HttpResponse("voted")
-        hack.votes += 1
-        response.set_cookie('vote', 'done')
-        return response
+        hack.votes = hack.votes + 1
+        hack.save()
+        request.session['vote']= "done"
+        return HttpResponse("voted")
 
 def admin(request):
     if request.method == "GET":
@@ -110,7 +112,7 @@ def admin(request):
         #print(password)
         if password == "123456":
             data = {}
-            hack = Hacker.objects.all()
+            hack = Hacker.objects.all().order_by('-votes')
             data["who"] = "admin"
             request.session['who'] = "admin"
             data["hackers"] = hack
@@ -124,14 +126,14 @@ def candidate(request):
         hack = Hacker.objects.filter(code=password).exists()
         if hack:
             data = {}
-            hack = Hacker.objects.all()
+            hack = Hacker.objects.all().order_by('-votes')
             hack1 = Hacker.objects.get(code=password)
             request.session['who'] = hack1.Name
             data["hackers"] = hack
             return render(request,"land.html",data)
     
 def user(request):
-    hack = Hacker.objects.all()
+    hack = Hacker.objects.all().order_by('-votes')
     #print(hack)
     data = {}
     data["who"] = "user"

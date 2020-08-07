@@ -4,10 +4,12 @@
 <table class="text-center" style="background-color:black;color:#149414;">
 <tr>
 <th>Hackers</th>
+<th>Votes</th>
 </tr>
 {% for us in hackers %}
 <tr>
 <th><a href="/home/{{us.Name}}">{{us.Name}}</a></th>
+<th>{{us.votes}}</th>
 </tr>
 {% endfor %}
 </table>

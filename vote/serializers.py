@@ -29,4 +29,5 @@ class HackerSerializer(serializers.Serializer):
         instance.python = validated_data.get('python', instance.python)
         instance.votes = validated_data.get('votes', instance.votes)
         instance.Algo = validated_data.get('Algo', instance.Algo)
+        instance.save()
         return instance
